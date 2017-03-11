@@ -1,9 +1,10 @@
 import sys
+import random
 tri = {}
 
 for doc in sys.argv:
-    with open(doc) as file:
-        lines = ''.join(file.readlines()).split()
+    with open(doc, 'r') as file:
+        lines = ''.join(file.readlines()).lower().split()
         for i in range(len(lines)):
             if (i+3 < len(lines)):
                 if (lines[i] in tri):
@@ -13,10 +14,9 @@ for doc in sys.argv:
                         else:
                             tri[lines[i]][lines[i+1]][lines[i+2]] = 1
                     else:
-                        tri1 = {}
                         tri2 = {}
                         tri2[lines[i + 2]] = 1
-                        tri1[lines[i + 1]] = tri2
+                        tri[lines[i]][lines[i + 1]] = tri2
                 else:
                     tri1 = {}
                     tri2 = {}
@@ -24,22 +24,22 @@ for doc in sys.argv:
                     tri1[lines[i + 1]] = tri2
                     tri[lines[i]] = tri1
 
-for val in tri:
-    print val, tri[val]
+
+newStory = []
+key = random.choice(tri.keys())
+key1 = random.choice(tri[key].keys())
+newStory.append(key)
+newStory.append(key1)
+
+for j in range(2, 1000):
+    posNextWord = tri[newStory[j-2]][newStory[j-1]]
+    probArr = []
+    for key in posNextWord:
+        for i in range(posNextWord[key]):
+            probArr.append(key)
+
+    newStory.append(random.choice(probArr))
 
 
-# tri1 = {}
-# tri2 = {}
-#
-# tri2['monkey'] = 1
-# tri1['eats'] = tri2
-# tri['banana'] = tri1
-#
-# words = ['banana', 'eats', 'monkey']
-# print tri[words[0]][words[1]][words[2]]
-#
-# if (words[0] in tri):
-#     if (words[1] in tri[words[0]]):
-#         if (words[2] in tri[words[0]][words[1]]):
-#             tri[words[0]][words[1]][words[2]] += 1
-#             print tri[words[0]][words[1]][words[2]]
+with open('story.txt', 'w') as writeFile:
+    writeFile.write(" ".join(newStory))
