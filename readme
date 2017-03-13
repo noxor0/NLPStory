@@ -1,0 +1,6 @@
+Makes a story with the given text documents.
+
+3D Hashmap used to store the trigrams
+
+Creates a weighted array with of the possible next words, and chooses the 
+next word. 
